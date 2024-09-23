@@ -5,6 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
+import dynamic from 'next/dynamic';
+
+const GoogleSignInButton = dynamic(() => import('@/app/(auth-pages)/google'), { ssr: false });
 
 export default function Signup({ searchParams }: { searchParams: Message }) {
   if ("message" in searchParams) {
@@ -42,6 +45,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
           <FormMessage message={searchParams} />
         </div>
       </form>
+      <GoogleSignInButton />
       <SmtpMessage />
     </>
   );

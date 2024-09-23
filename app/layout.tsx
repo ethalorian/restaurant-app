@@ -25,6 +25,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={GeistSans.className} suppressHydrationWarning>
+      <head>
+        <script src="https://accounts.google.com/gsi/client" async></script>
+      </head>
       <body className="bg-background text-foreground">
         <ThemeProvider
           attribute="class"
