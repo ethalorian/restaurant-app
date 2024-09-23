@@ -5,9 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
-import dynamic from 'next/dynamic';
+import GoogleSignInButton from "@/app/(auth-pages)/googleSignInButton";
 
-const GoogleSignInButton = dynamic(() => import('@/app/(auth-pages)/google'), { ssr: false });
+
 
 export default function Signup({ searchParams }: { searchParams: Message }) {
   if ("message" in searchParams) {
@@ -43,9 +43,12 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
             Sign up
           </SubmitButton>
           <FormMessage message={searchParams} />
+          <div className="mt-2">
+            <GoogleSignInButton className="w-full bg-white text-gray-700 font-medium py-2 px-4 border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" />
+          </div>
         </div>
       </form>
-      <GoogleSignInButton />
+      
       <SmtpMessage />
     </>
   );
