@@ -1,4 +1,4 @@
-'use client'; // This line is crucial
+'use client'; 
 
 import { signInWithGoogleAction } from "@/app/actions";
 
