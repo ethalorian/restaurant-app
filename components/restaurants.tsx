@@ -13,7 +13,7 @@ const fetchRestaurants = async (): Promise<Restaurant[]> => {
                 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'apikey': process.env.NEXT_PUBLIC_SUPABASE_API_KEY, // Ensure this is the correct API key
+                'apikey': process.env.NEXT_PUBLIC_SUPABASE_API_KEY!, // Ensure this is the correct API key
             },
         });
 
