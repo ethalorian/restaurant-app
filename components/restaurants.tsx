@@ -3,6 +3,7 @@ import React from 'react';
 interface Restaurant {
     id: number; // or string, depending on your data
     name: string;
+    city: string;
 }
 
 const fetchRestaurants = async (): Promise<Restaurant[]> => {
@@ -35,7 +36,7 @@ const Restaurants = async () => {
         <ul>
             {restaurants.length > 0 ? (
                 restaurants.map((restaurant) => (
-                    <li key={restaurant.id}>{restaurant.name}</li>
+                    <li key={restaurant.id}>{restaurant.name}{restaurant.city}</li>
                 ))
             ) : (
                 <li>No restaurants found.</li>

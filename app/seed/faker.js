@@ -40,6 +40,13 @@ function generateMenuItem(menuType, priceTier) {
     };
 }
 
+function capitalizeWords(str) {
+    return str
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
 async function seedDatabase() {
     const client = await pool.connect();
 
@@ -82,7 +89,7 @@ async function seedDatabase() {
             const restaurantResult = await client.query(
                 'INSERT INTO restaurants (name, street_address, city, state, price_tier, image_url) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
                 [
-                    faker.company.name(),
+                    capitalizeWords(`The ${faker.word.adjective()} ${faker.animal.type()}`),
                     faker.location.streetAddress(),
                     faker.location.city(),
                     faker.location.state(),
