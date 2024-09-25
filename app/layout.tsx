@@ -13,8 +13,11 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "Food Finder",
+  description: "The place where you find your food!",
+  icons: {
+    icon: '/app/foodfinder.png',
+  },
 };
 
 export default function RootLayout({
@@ -50,15 +53,7 @@ export default function RootLayout({
 
               <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
                 <p>
-                  Powered by{" "}
-                  <a
-                    href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-                    target="_blank"
-                    className="font-bold hover:underline"
-                    rel="noreferrer"
-                  >
-                    Supabase
-                  </a>
+                  ethalorian
                 </p>
                 <ThemeSwitcher />
               </footer>
