@@ -1,7 +1,5 @@
-import { EnvVarWarning } from "@/components/env-var-warning";
 import HeaderAuth from "@/components/header-auth";
 import { ThemeSwitcher } from "@/components/theme-switcher";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import { GeistSans } from "geist/font/sans";
 import { ThemeProvider } from "next-themes";
 import Link from "next/link";
@@ -15,9 +13,6 @@ export const metadata = {
   metadataBase: new URL(defaultUrl),
   title: "Food Finder",
   description: "The place where you find your food!",
-  icons: {
-    icon: '/app/foodfinder.png',
-  },
 };
 
 export default function RootLayout({
@@ -44,7 +39,7 @@ export default function RootLayout({
                   <div className="flex gap-5 items-center font-semibold">
                     <Link href={"/"}>Food Finder</Link>
                   </div>
-                  {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
+                   <HeaderAuth />
                 </div>
               </nav>
               <div className="flex flex-col gap-20 max-w-5xl p-5">
