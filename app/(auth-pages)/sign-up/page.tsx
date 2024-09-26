@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { SmtpMessage } from "../smtp-message";
-import GoogleSignInButton from "@/app/(auth-pages)/googleSignInButton";
+import { GoogleSignUpButton } from "@/app/(auth-pages)/googleSignInButton";
 
 
 
@@ -19,7 +19,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
   }
 
   return (
-    <>
+    <div>
       <form className="flex flex-col min-w-64 max-w-64 mx-auto">
         <h1 className="text-2xl font-medium">Sign up</h1>
         <p className="text-sm text text-foreground">
@@ -43,15 +43,12 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
             Sign up
           </SubmitButton>
           <FormMessage message={searchParams} />
-          <div className="mt-2">
-            <div className="w-full bg-white text-gray-700 font-medium py-2 px-4 border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
-              <GoogleSignInButton />
-            </div>
-          </div>
         </div>
       </form>
       
-      <SmtpMessage />
-    </>
+      <div>
+          <GoogleSignUpButton />
+      </div>
+    </div>
   );
 }
