@@ -38,7 +38,7 @@ const Restaurants = async () => {
     const restaurants = await fetchRestaurants();
 
     return (
-        <div className="col-span-1 md:col-start-2 w-1/3 mx-auto"> {/* Set width to half and center */}
+        <div className="col-span-2 md:col-start-1 w-full mx-auto"> {/* Set width to half and center */}
             <Carousel autoScroll={true}>
                 <CarouselPrevious />
                 <CarouselContent>
