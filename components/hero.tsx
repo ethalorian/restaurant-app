@@ -4,7 +4,7 @@ export default function Header() {
     <div className="flex flex-col gap-2 items-center">
       <div className="flex flex-row gap-1">  
         <div className="flex flex-col items-center justify-center">  
-          <h1 className="text-8xl text-center mb-4">Looking for Snack?</h1>
+          <h1 className="text-8xl text-center mb-4">Looking for a Snack?</h1>
           <h4 className="text-xl text-center">Welcome to Food Finder! The only place to find what you are craving.</h4>
         </div>
         <Image

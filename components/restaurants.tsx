@@ -5,6 +5,9 @@ interface Restaurant {
     id: number; // or string, depending on your data
     name: string;
     city: string;
+    state: string;
+    price_tier: string;
+    street_address: string;
     image_url: string;
 }
 
@@ -42,8 +45,11 @@ const Restaurants = async () => {
                     {restaurants.length > 0 ? (
                         restaurants.map((restaurant) => (
                             <CarouselItem key={restaurant.id}>
-                                <img src={restaurant.image_url} alt={restaurant.name} className="w-full h-auto" /> {/* Maintain aspect ratio */}
-                                <h3 className="text-center text-2xl mt-8">{restaurant.name}</h3>
+                                <h3 className="text-center text-4xl mt-2 mb-2">{restaurant.name}</h3>
+                                <img src={restaurant.image_url} alt={restaurant.name} className="w-full h-auto rounded-xl " /> {/* Maintain aspect ratio */}
+                                <h3 className="text-center text-xl mt-2">{restaurant.street_address}</h3>
+                                <h3 className="text-center text-xl mt-2">{restaurant.city}, {restaurant.state}</h3>
+                                <h3 className="text-center text-xl mt-2">{restaurant.price_tier}</h3>
                             </CarouselItem>
                         ))
                     ) : (

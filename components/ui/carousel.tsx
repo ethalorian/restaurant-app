@@ -110,7 +110,7 @@ const Carousel = React.forwardRef<
         } else {
           api.scrollTo(0); // Go back to the first slide
         }
-      }, 3000); // Change image every 2 seconds
+      }, 5000); // Change image every 5 seconds
 
       return () => clearInterval(interval); // Cleanup on unmount
     }, [api, autoScroll]);
