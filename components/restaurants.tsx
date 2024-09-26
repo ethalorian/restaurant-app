@@ -1,9 +1,11 @@
 import React from 'react';
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 
 interface Restaurant {
     id: number; // or string, depending on your data
     name: string;
     city: string;
+    image_url: string;
 }
 
 const fetchRestaurants = async (): Promise<Restaurant[]> => {
@@ -33,16 +35,26 @@ const Restaurants = async () => {
     const restaurants = await fetchRestaurants();
 
     return (
-        <ul>
-            {restaurants.length > 0 ? (
-                restaurants.map((restaurant) => (
-                    <li key={restaurant.id}>{restaurant.name}{restaurant.city}</li>
-                ))
-            ) : (
-                <li>No restaurants found.</li>
-            )}
-        </ul>
+        <div className="col-span-1 md:col-start-2 w-1/3 mx-auto"> {/* Set width to half and center */}
+            <Carousel autoScroll={true}>
+                <CarouselPrevious />
+                <CarouselContent>
+                    {restaurants.length > 0 ? (
+                        restaurants.map((restaurant) => (
+                            <CarouselItem key={restaurant.id}>
+                                <img src={restaurant.image_url} alt={restaurant.name} className="w-full h-auto" /> {/* Maintain aspect ratio */}
+                                <h3 className="text-center text-2xl mt-8">{restaurant.name}</h3>
+                            </CarouselItem>
+                        ))
+                    ) : (
+                        <CarouselItem>
+                            <h3>No restaurants found.</h3>
+                        </CarouselItem>
+                    )}
+                </CarouselContent>
+                <CarouselNext />
+            </Carousel>
+        </div> // Closing the wrapper div
     );
 };
-
 export default Restaurants;
