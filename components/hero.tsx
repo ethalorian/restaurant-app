@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { Drawer, DrawerTrigger, DrawerContent, DrawerClose } from "./ui/drawer"; // Adjust the import path if needed
+import { RestSearch } from "./restSearch";
+
 
 export default function Header() {
   return (
@@ -22,14 +24,16 @@ export default function Header() {
             className="w-full max-w-[300px] md:max-w-[400px] h-auto mt-4 md:mt-0 cursor-pointer"
           />
         </DrawerTrigger>
-        <p className="text-2xl font-medium">Click the icon to see what we're cooking</p>
+        <p className="text-2xl font-medium text-center justify-items-center">Click on the<br/> 
+        <strong>MAGNIFYING GLASS ABOVE</strong><br/>
+        to Check out a list of our partner restaurants.</p>
 
         {/* Drawer Content */}
         <DrawerContent className="h-[50vh]"> {/* Adjust the height to 50% of the viewport height */}
           <DrawerClose className="absolute right-4 top-4">Close</DrawerClose>
-          <div className="p-4">
+          <div className="p-4 ml-20">
             <h2 className="text-xl font-semibold">Drawer Content</h2>
-            <p>Here you can add any content you want for the drawer!</p>
+            <RestSearch />
           </div>
         </DrawerContent>
       </Drawer>
