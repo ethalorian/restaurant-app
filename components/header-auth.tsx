@@ -1,8 +1,8 @@
 import { signOutAction } from "@/app/actions";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { createClient } from "@/utils/supabase/server";
+import { ShoppingCart } from "./shopping-cart";
 
 export default async function AuthButton() {
   const {
@@ -17,6 +17,7 @@ export default async function AuthButton() {
           Sign out
         </Button>
       </form>
+      <ShoppingCart />
     </div>
   ) : (
     <div className="flex gap-2">

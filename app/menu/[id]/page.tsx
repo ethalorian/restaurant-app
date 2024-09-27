@@ -3,6 +3,10 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { RestaurantCombobox } from '@/components/restSearch';
+import { useShoppingCart } from '@/contexts/ShoppingCartContext';
+import { Button } from '@/components/ui/button';
+import { AuthPrompt } from '@/components/auth-prompt';
+import { createClient } from '@/utils/supabase/client';
 
 interface MenuItem {
   id: number;
@@ -32,10 +36,22 @@ interface GroupedMenuItems {
 
 export default function MenuPage() {
   const params = useParams()
-  const [menuItems, setMenuItems] = useState<GroupedMenuItems>({})
+  const { menuItems, setMenuItems, addToCart } = useShoppingCart();
   const [restaurantName, setRestaurantName] = useState<string>('')
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isAuthPromptOpen, setIsAuthPromptOpen] = useState(false)
+  const [user, setUser] = useState<any>(null)
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+
+    checkUser();
+  }, []);
 
   useEffect(() => {
     const fetchMenuItems = async () => {
@@ -122,7 +138,15 @@ export default function MenuPage() {
     };
 
     fetchMenuItems();
-  }, [params.id]);
+  }, [params.id, setMenuItems]);
+
+  const handleAddToCart = (item: MenuItem) => {
+    if (user) {
+      addToCart(item);
+    } else {
+      setIsAuthPromptOpen(true);
+    }
+  };
 
   const sortCategories = (a: [string, MenuItem[]], b: [string, MenuItem[]]) => {
     const order = ["Appetizer", "Main Course", "Dessert"];
@@ -142,7 +166,6 @@ export default function MenuPage() {
           {Object.entries(categories)
             .sort(sortCategories)
             .map(([category, items]) => (
-              // Only render the category if it has items
               items.length > 0 && (
                 <div key={category} className="mb-8">
                   <h3 className="text-2xl font-medium mb-4 text-secondary-foreground">{category}</h3>
@@ -154,6 +177,12 @@ export default function MenuPage() {
                         )}
                         <h4 className="text-lg font-medium mb-2">{item.name}</h4>
                         <p className="text-lg font-bold text-primary">${item.price.toFixed(2)}</p>
+                        <Button 
+                          onClick={() => handleAddToCart(item)} 
+                          className="mt-4 w-full"
+                        >
+                          Add to Cart
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -162,6 +191,10 @@ export default function MenuPage() {
             ))}
         </div>
       ))}
+      <AuthPrompt 
+        isOpen={isAuthPromptOpen} 
+        onClose={() => setIsAuthPromptOpen(false)} 
+      />
     </div>
   );
 }

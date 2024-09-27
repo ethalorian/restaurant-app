@@ -2,8 +2,17 @@
 
 import { signInWithGoogleAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
+import React from 'react';
 
-export function GoogleSignInButton() {
+interface GoogleSignUpButtonProps {
+  returnTo?: string;
+}
+
+interface GoogleSignInButtonProps {
+  returnTo?: string;
+}
+
+export function GoogleSignInButton({ returnTo }: GoogleSignInButtonProps) {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogleAction();
@@ -22,7 +31,7 @@ export function GoogleSignInButton() {
   );
 }
 
-export function GoogleSignUpButton() {
+export function GoogleSignUpButton({ returnTo }: GoogleSignUpButtonProps) {
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogleAction();
@@ -36,7 +45,7 @@ export function GoogleSignUpButton() {
         <Button
           onClick={handleGoogleSignIn}
         >
-          Sign Up With Google
+          Sign In With Google
         </Button>
   );
 }
