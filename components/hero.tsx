@@ -25,8 +25,7 @@ export default function Header() {
               className="w-full max-w-[300px] md:max-w-[400px] h-auto mt-4 md:mt-0"
             />
             <p className="text-lg md:text-xl font-medium text-center mt-2">
-              Click on the <strong>MAGNIFYING GLASS ABOVE</strong><br/>
-              to check out a list of our partner restaurants.
+              <strong>OPEN SEARCH</strong><br/>
             </p>
           </div>
         </DrawerTrigger>
