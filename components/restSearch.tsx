@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Check, ChevronsUpDown } from "lucide-react"
-
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -18,19 +17,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { useRouter } from 'next/navigation'
 
-// The Restaurant interface based on the data structure
+// Define the Restaurant type
 interface Restaurant {
-  id: number | string;
+  id: string;
   name: string;
-  city: string;
-  state: string;
-  price_tier: string;
-  street_address: string;
-  image_url: string;
+  // Add other properties as needed
 }
 
-// Function to fetch restaurants from the API
 const fetchRestaurants = async (): Promise<Restaurant[]> => {
   try {
     const response = await fetch('https://vjbicbyggcrdejrwwzqn.supabase.co/rest/v1/restaurants', {
@@ -54,32 +49,22 @@ const fetchRestaurants = async (): Promise<Restaurant[]> => {
   }
 };
 
-// Fuzzy search helper function
-const fuzzySearch = (input: string, restaurantName: string) => {
-  const lowerInput = input.toLowerCase();
-  const lowerRestaurantName = restaurantName.toLowerCase();
-  return lowerRestaurantName.includes(lowerInput);
-};
-
-export function RestSearch() {
+export function RestaurantCombobox() {
   const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState<string>("")
-  const [searchTerm, setSearchTerm] = React.useState<string>("") // State to track the search term
-  const [restaurants, setRestaurants] = React.useState<Restaurant[]>([]) // State to store the fetched restaurants
+  const [value, setValue] = React.useState("")
+  const [restaurants, setRestaurants] = React.useState<Restaurant[]>([])
+  const router = useRouter()
 
-  // Fetch the restaurants when the component mounts
   React.useEffect(() => {
-    const loadRestaurants = async () => {
-      const fetchedRestaurants = await fetchRestaurants();
-      setRestaurants(fetchedRestaurants); // Store the fetched restaurants
-    };
-    loadRestaurants();
-  }, []);
+    fetchRestaurants().then(setRestaurants)
+  }, [])
 
-  // Filter restaurants based on the search term using fuzzy search
-  const filteredRestaurants = restaurants.filter((restaurant) =>
-    fuzzySearch(searchTerm, restaurant.name)
-  );
+  const handleSelect = (currentValue: string) => {
+    setValue(currentValue)
+    setOpen(false)
+    // Navigate to the menu page with the selected restaurant ID
+    router.push(`/menu/${currentValue}`)
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -98,36 +83,26 @@ export function RestSearch() {
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput
-            placeholder="Search restaurant..."
-            value={searchTerm} // Bind the search input value
-            onInput={(e) => setSearchTerm(e.currentTarget.value)} // Track search term changes
-          />
+          <CommandInput placeholder="Search restaurant..." />
           <CommandList>
-            {filteredRestaurants.length === 0 ? (
-              <CommandEmpty>No restaurant found.</CommandEmpty>
-            ) : (
-              <CommandGroup>
-                {filteredRestaurants.map((restaurant) => (
-                  <CommandItem
-                    key={restaurant.id}
-                    value={String(restaurant.id)}
-                    onSelect={(currentValue) => {
-                      setValue(currentValue === value ? "" : currentValue);
-                      setOpen(false);
-                    }}
-                  >
-                    <Check
-                      className={cn(
-                        "mr-2 h-4 w-4",
-                        value === String(restaurant.id) ? "opacity-100" : "opacity-0"
-                      )}
-                    />
-                    {restaurant.name}
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            )}
+            <CommandEmpty>No restaurant found.</CommandEmpty>
+            <CommandGroup>
+              {restaurants.map((restaurant) => (
+                <CommandItem
+                  key={restaurant.id}
+                  value={restaurant.id}
+                  onSelect={handleSelect}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      value === restaurant.id ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {restaurant.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
           </CommandList>
         </Command>
       </PopoverContent>
