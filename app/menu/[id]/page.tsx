@@ -7,7 +7,9 @@ import { useShoppingCart } from '@/contexts/ShoppingCartContext';
 import { Button } from '@/components/ui/button';
 import { AuthPrompt } from '@/components/auth-prompt';
 import { createClient } from '@/utils/supabase/client';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from '@/hooks/use-toast';
+
 
 interface MenuItem {
   id: number;
@@ -178,19 +180,25 @@ export default function MenuPage() {
                   <h3 className="text-2xl font-medium mb-4 text-secondary-foreground">{category}</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {items.map((item) => (
-                      <div key={item.id} className="bg-card text-card-foreground shadow-md rounded-lg p-6">
-                        {item.image_url && (
-                          <img src={item.image_url} alt={item.name} className="w-full h-48 object-cover mb-4 rounded" />
-                        )}
-                        <h4 className="text-lg font-medium mb-2">{item.name}</h4>
-                        <p className="text-lg font-bold text-primary">${item.price.toFixed(2)}</p>
-                        <Button 
-                          onClick={() => handleAddToCart(item)} 
-                          className="mt-4 w-full"
-                        >
-                          Add to Cart
-                        </Button>
-                      </div>
+                      <Card key={item.id} className="relative pb-16">
+                        <CardHeader>
+                          {item.image_url && (
+                            <img src={item.image_url} alt={item.name} className="w-full h-48 object-cover mb-4 rounded" />
+                          )}
+                          <CardTitle>{item.name}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-lg font-bold text-primary">${item.price.toFixed(2)}</p>
+                        </CardContent>
+                        <CardFooter className="absolute bottom-0 left-0 right-0 p-4">
+                          <Button 
+                            onClick={() => handleAddToCart(item)} 
+                            className="w-full"
+                          >
+                            Add to Cart
+                          </Button>
+                        </CardFooter>
+                      </Card>
                     ))}
                   </div>
                 </div>
