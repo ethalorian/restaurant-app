@@ -38,7 +38,7 @@ const Restaurants = async () => {
     const restaurants = await fetchRestaurants();
 
     return (
-        <div className="col-span-2 md:col-start-1 w-full mx-auto"> {/* Set width to half and center */}
+        <div className="col-span-2 md:col-start-1 w-full mx-auto">
             <Carousel autoScroll={true}>
                 <CarouselPrevious />
                 <CarouselContent>
@@ -46,7 +46,9 @@ const Restaurants = async () => {
                         restaurants.map((restaurant) => (
                             <CarouselItem key={restaurant.id}>
                                 <h3 className="text-center text-4xl mt-2 mb-2">{restaurant.name}</h3>
-                                <img src={restaurant.image_url} alt={restaurant.name} className="w-full h-auto rounded-xl " /> {/* Maintain aspect ratio */}
+                                <div className="w-2/3 md:w-1/2 mx-auto"> {/* Updated wrapper div */}
+                                    <img src={restaurant.image_url} alt={restaurant.name} className="w-full h-auto rounded-xl" />
+                                </div>
                                 <h3 className="text-center text-xl mt-2">{restaurant.street_address}</h3>
                                 <h3 className="text-center text-xl mt-2">{restaurant.city}, {restaurant.state}</h3>
                                 <h3 className="text-center text-xl mt-2">{restaurant.price_tier}</h3>
@@ -60,7 +62,7 @@ const Restaurants = async () => {
                 </CarouselContent>
                 <CarouselNext />
             </Carousel>
-        </div> // Closing the wrapper div
+        </div>
     );
 };
 export default Restaurants;

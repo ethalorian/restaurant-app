@@ -2,6 +2,8 @@ import Image from "next/image";
 import { Drawer, DrawerTrigger, DrawerContent, DrawerClose } from "./ui/drawer";
 import { RestaurantCombobox } from "./restSearch";
 import { DialogTitle, DialogDescription } from "./ui/dialog";
+import Restaurants from "./restaurants";
+import { Button } from "./ui/button";
 
 export default function Header() {
   return (
@@ -30,16 +32,34 @@ export default function Header() {
           </div>
         </DrawerTrigger>
 
-        <DrawerContent className="h-[80vh] sm:h-[50vh]">
-          <div className="p-4 relative">
-            <DialogTitle className="text-2xl font-bold mb-2">Partner Restaurants</DialogTitle>
-            <DialogDescription className="mb-4">Search and select from our partner restaurants.</DialogDescription>
-            <DrawerClose className="absolute right-4 top-4 px-2 py-1 bg-gray-200 rounded">Close</DrawerClose>
-            <div className="mt-6">
-              <RestaurantCombobox />
+          <DrawerContent className="h-[80vh] sm:h-[80vh]">
+            <div className="p-4 relative">
+              <main className="grid grid-cols-6 gap-4 md:gap-5 px-[5px] md:px-4">
+                {/* Empty column 1 */}
+                <div className="col-span-1"></div>
+                
+                {/* Center content in columns 2-5 */}
+                <div className="col-span-4 flex flex-col items-center text-center">
+                  <DialogTitle className="text-2xl font-bold mb-2 mt-2">Partner Restaurants</DialogTitle>
+                  <div className="mt-6 w-full">
+                    <RestaurantCombobox />
+                  </div>
+                  <DialogDescription className="mb-4 mt-4">Search and select from our partner restaurants.</DialogDescription>
+                  
+                  <div className="mt-6 w-full">
+                    <Restaurants />
+                  </div>
+                </div>
+                
+                {/* Close button in column 6 */}
+                <div className="hidden sm:flex col-span-1 justify-end items-start mr-5">
+                  <DrawerClose asChild>
+                    <Button variant="outline" size="sm">Close</Button>
+                  </DrawerClose>
+                </div>
+              </main>
             </div>
-          </div>
-        </DrawerContent>
+          </DrawerContent>
       </Drawer>
 
       <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-2" />
