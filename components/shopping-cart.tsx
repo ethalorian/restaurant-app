@@ -1,51 +1,97 @@
+'use client';
+
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { ShoppingCart as ShoppingCartIcon } from "lucide-react"
+import { ShoppingCart as ShoppingCartIcon, Minus, Plus, X } from "lucide-react"
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetFooter,
 } from "@/components/ui/sheet"
- 
+import { useShoppingCart } from "@/contexts/ShoppingCartContext"
+import { useState, useEffect } from "react"
+
 export function ShoppingCart() {
-    return (
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <ShoppingCartIcon className="h-5 w-5" />
-            </Button>
+  const { cartItems, removeFromCart, addToCart } = useShoppingCart()
+  const [subtotal, setSubtotal] = useState(0)
+  const serviceFeeRate = 0.035 // 3.5%
+  const salesTaxRate = 0.065 // 6.5%
+
+  // Calculate total number of items in the cart
+  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0)
+
+  useEffect(() => {
+    const newSubtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+    setSubtotal(newSubtotal)
+  }, [cartItems])
+
+  const serviceFee = subtotal * serviceFeeRate
+  const salesTax = subtotal * salesTaxRate
+  const total = subtotal + serviceFee + salesTax
+
+  return (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" className="relative">
+          <ShoppingCartIcon className="h-5 w-5" />
+          {totalItems > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+              {totalItems}
+            </span>
+          )}
+        </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
-          <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
-          </SheetDescription>
+          <SheetTitle>Your Cart</SheetTitle>
         </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input id="name" value="Pedro Duarte" className="col-span-3" />
+        <div className="flex flex-col gap-4 py-4">
+          {cartItems.length === 0 ? (
+            <p>Your cart is empty.</p>
+          ) : (
+            cartItems.map((item) => (
+              <div key={item.id} className="flex items-center justify-between">
+                <div>
+                  <p>{item.name}</p>
+                  <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button size="icon" variant="outline" onClick={() => removeFromCart(item.id)}>
+                    <Minus className="h-4 w-4" />
+                  </Button>
+                  <span>{item.quantity}</span>
+                  <Button size="icon" variant="outline" onClick={() => addToCart(item)}>
+                    <Plus className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+        <div className="mt-4 space-y-2">
+          <div className="flex justify-between">
+            <span>Subtotal for {totalItems} item{totalItems !== 1 ? 's' : ''}:</span>
+            <span>${subtotal.toFixed(2)}</span>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input id="username" value="@peduarte" className="col-span-3" />
+          <div className="flex justify-between">
+            <span>Service Fee (3.5%):</span>
+            <span>${serviceFee.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between">
+            <span>Sales Tax (6.5%):</span>
+            <span>${salesTax.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between font-bold">
+            <span>Total:</span>
+            <span>${total.toFixed(2)}</span>
           </div>
         </div>
-        <SheetFooter>
-          <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
-          </SheetClose>
+        <SheetFooter className="mt-4">
+          <Button className="w-full" onClick={() => {/* Add checkout logic here */}}>
+            Checkout
+          </Button>
         </SheetFooter>
       </SheetContent>
     </Sheet>

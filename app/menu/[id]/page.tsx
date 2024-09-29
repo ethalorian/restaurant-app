@@ -7,6 +7,7 @@ import { useShoppingCart } from '@/contexts/ShoppingCartContext';
 import { Button } from '@/components/ui/button';
 import { AuthPrompt } from '@/components/auth-prompt';
 import { createClient } from '@/utils/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface MenuItem {
   id: number;
@@ -42,6 +43,7 @@ export default function MenuPage() {
   const [error, setError] = useState<string | null>(null)
   const [isAuthPromptOpen, setIsAuthPromptOpen] = useState(false)
   const [user, setUser] = useState<any>(null)
+  const { toast } = useToast()
 
   useEffect(() => {
     const checkUser = async () => {
@@ -143,6 +145,11 @@ export default function MenuPage() {
   const handleAddToCart = (item: MenuItem) => {
     if (user) {
       addToCart(item);
+      toast({
+        title: "Item added to cart",
+        description: `${item.name} has been added to your cart.`,
+        duration: 3000,
+      });
     } else {
       setIsAuthPromptOpen(true);
     }
