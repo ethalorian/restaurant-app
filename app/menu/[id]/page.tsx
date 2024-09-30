@@ -9,6 +9,7 @@ import { AuthPrompt } from '@/components/auth-prompt';
 import { createClient } from '@/utils/supabase/client';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from '@/hooks/use-toast';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 
 interface MenuItem {
@@ -168,7 +169,10 @@ export default function MenuPage() {
   return (
     <div className="container mx-auto px-4 py-8 bg-background text-foreground">
       <h1 className="text-4xl font-bold mb-8 text-primary">{restaurantName}&apos;s Menu</h1>
-      <RestaurantCombobox />
+      <div className="mb-5">
+        <RestaurantCombobox />
+      </div>
+      <ScrollArea className="h-[calc(100vh-200px)]">
       {Object.entries(menuItems).map(([menuType, categories]) => (
         <div key={menuType} className="mb-12">
           <h2 className="text-3xl font-semibold mb-6 text-primary">{menuType}</h2>
@@ -206,6 +210,7 @@ export default function MenuPage() {
             ))}
         </div>
       ))}
+      </ScrollArea>
       <AuthPrompt 
         isOpen={isAuthPromptOpen} 
         onClose={() => setIsAuthPromptOpen(false)} 

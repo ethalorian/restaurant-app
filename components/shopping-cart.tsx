@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button"
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
 import { ShoppingCart as ShoppingCartIcon, Minus, Plus, X } from "lucide-react"
 import {
   Sheet,
@@ -51,6 +52,7 @@ export function ShoppingCart() {
           <SheetHeader>
             <SheetTitle>Your Cart</SheetTitle>
           </SheetHeader>
+          <ScrollArea className="h-[calc(100vh-10rem)] pr-4">
           <div className="flex flex-col gap-4 py-4">
             {cartItems.length === 0 ? (
               <p>Your cart is empty.</p>
@@ -92,11 +94,12 @@ export function ShoppingCart() {
               <span>${total.toFixed(2)}</span>
             </div>
           </div>
-          <SheetFooter className="mt-4">
+          <SheetFooter className="mt-4 flex justify-center">
             <StripeProvider total={total}>
               <StripePaymentForm total={total} />
             </StripeProvider>
           </SheetFooter>
+          </ScrollArea>
         </SheetContent>
       </Sheet>
   );

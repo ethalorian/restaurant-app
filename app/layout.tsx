@@ -47,10 +47,10 @@ export default function RootLayout({
                           <Image
                             src="/foodfinder.png"
                             alt="Food Finder Logo"
-                            width={50}
-                            height={50}
+                            width={35}
+                            height={35}
                           />
-                          <Link href={"/"} className='text-2xl'>Food Finder</Link>
+                          <Link href={"/"} className='text-l'>Food Finder</Link>
                         </div>
                         <HeaderAuth />
                       </div>
