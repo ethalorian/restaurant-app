@@ -8,7 +8,7 @@ export function Footer() {
   return (
     <footer>
       <div className="mx-auto max-w-7xl overflow-hidden px-6 py-12 sm:py-20 lg:px-8">
-        <div className="mt-10 flex justify-center space-x-10">
+        <div className="mt-4 flex justify-center space-x-10">
           <Link href="https://twitter.com/ethalorian" className="text-gray-400 hover:text-gray-500">
             <span className="sr-only">Twitter</span>
             <FaTwitter className="h-6 w-6" />
