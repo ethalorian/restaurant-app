@@ -7,62 +7,53 @@ import { Button } from "./ui/button";
 
 export default function Header() {
   return (
-    <div className="flex flex-col gap-4 items-center">
-      <div className="flex flex-col md:flex-row gap-4 items-center">
-        <div className="flex flex-col items-center justify-center text-center">
-          <h1 className="text-4xl md:text-6xl lg:text-8xl mb-2 md:mb-4">Looking for a Snack?</h1>
-          <h4 className="text-base md:text-lg">Welcome to Food Finder! The only place to find what you are craving.</h4>
-        </div>
+    <div className="flex flex-col items-center justify-center text-center">
+      <div className="flex flex-col items-center justify-center">
+        <h1 className="text-4xl md:text-6xl lg:text-8xl mb-2 md:mb-4">Looking for a Snack?</h1>
+        <h4 className="text-base md:text-lg">Welcome to Food Finder! The only place to find what you are craving.</h4>
       </div>
       
       <Drawer>
         <DrawerTrigger asChild>
-          <div className="cursor-pointer">
+          <div className="cursor-pointer flex flex-col items-center">
             <Image
               src="/foodfinder.png"
               alt="food finder logo"
               priority
-              width={400}
-              height={400}
-              className="w-full max-w-[300px] md:max-w-[400px] h-auto mt-4 md:mt-0"
+              width={600}
+              height={600}
+              className="w-full max-w-[400px] md:max-w-[500px] lg:max-w-[600px] h-auto mt-4 md:mt-6"
             />
-            <p className="text-lg md:text-xl font-medium text-center mt-2">
-              <strong>OPEN SEARCH</strong><br/>
+            <p className="text-lg md:text-xl lg:text-2xl font-medium text-center mt-4">
+              <strong>CLICK ON THE ICON TO BEGIN</strong><br/>
             </p>
           </div>
         </DrawerTrigger>
 
-          <DrawerContent className="h-[80vh] sm:h-[80vh]">
-            <div className="p-4 relative">
-              <main className="grid grid-cols-6 gap-4 md:gap-5 px-[5px] md:px-4">
-                {/* Empty column 1 */}
-                <div className="col-span-1"></div>
-                
-                {/* Center content in columns 2-5 */}
-                <div className="col-span-4 flex flex-col items-center text-center">
-                  <DialogTitle className="text-2xl font-bold mb-2 mt-2">Partner Restaurants</DialogTitle>
-                  <div className="mt-6 w-full">
-                    <RestaurantCombobox />
-                  </div>
-                  <DialogDescription className="mb-4 mt-4">Search and select from our partner restaurants.</DialogDescription>
-                  
-                  <div className="mt-4 w-full">
-                    <Restaurants />
-                  </div>
+        <DrawerContent className="h-[80vh] sm:h-[80vh]">
+          <div className="p-4 relative flex flex-col items-center">
+            <main className="w-full max-w-3xl">
+              <div className="flex flex-col items-center text-center">
+                <DialogTitle className="text-2xl font-bold mb-2 mt-2">Partner Restaurants</DialogTitle>
+                <div className="mt-6 w-full">
+                  <RestaurantCombobox />
                 </div>
+                <DialogDescription className="mb-4 mt-4">Search and select from our partner restaurants.</DialogDescription>
                 
-                {/* Close button in column 6 */}
-                <div className="hidden sm:flex col-span-1 justify-end items-start mr-5">
-                  <DrawerClose asChild>
-                    <Button variant="outline" size="sm">Close</Button>
-                  </DrawerClose>
+                <div className="mt-4 w-full">
+                  <Restaurants />
                 </div>
-              </main>
-            </div>
-          </DrawerContent>
+              </div>
+              
+              <div className="mt-4 flex justify-center">
+                <DrawerClose asChild>
+                  <Button variant="outline" size="sm">Close</Button>
+                </DrawerClose>
+              </div>
+            </main>
+          </div>
+        </DrawerContent>
       </Drawer>
-
-      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-2" />
     </div>
   );
 }

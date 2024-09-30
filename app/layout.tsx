@@ -7,8 +7,7 @@ import "./globals.css";
 import Image from "next/image";
 import { ShoppingCartProvider } from "@/contexts/ShoppingCartContext";
 import { Toaster } from "@/components/ui/toaster";
-
-
+import { Footer } from "@/components/footer";
 
 
 const defaultUrl = process.env.VERCEL_URL
@@ -58,13 +57,10 @@ export default function RootLayout({
                     <div className="flex flex-col gap-5 max-w-5xl p-5">
                       {children}
                     </div>
-                    <Toaster/>
+                    <Toaster />
 
-                    <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xl gap-8 py-16">
-                      <p>
-                        ethalorian
-                      </p>
-                      <ThemeSwitcher />
+                    <footer >
+                      <Footer/>
                     </footer>
                   </div>
                 </main>

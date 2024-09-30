@@ -10,7 +10,9 @@ import { createClient } from '@/utils/supabase/client';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from '@/hooks/use-toast';
 import { ScrollArea } from '@/components/ui/scroll-area';
-
+import { Input } from '@/components/ui/input';
+import Image from 'next/image';
+import Fuse from 'fuse.js';
 
 interface MenuItem {
   id: number;
@@ -30,6 +32,7 @@ interface Menu {
 interface Restaurant {
   id: number;
   name: string;
+  image_url: string;
 }
 
 interface GroupedMenuItems {
@@ -47,6 +50,9 @@ export default function MenuPage() {
   const [isAuthPromptOpen, setIsAuthPromptOpen] = useState(false)
   const [user, setUser] = useState<any>(null)
   const { toast } = useToast()
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredMenuItems, setFilteredMenuItems] = useState<GroupedMenuItems>({});
+  const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -58,6 +64,50 @@ export default function MenuPage() {
     checkUser();
   }, []);
 
+  useEffect(() => {
+    const fetchRestaurantData = async () => {
+      try {
+        if (!params.id) {
+          throw new Error('No restaurant name provided');
+        }
+
+        const decodedRestaurantName = decodeURIComponent(params.id as string);
+        setRestaurantName(decodedRestaurantName);
+
+        // Fetch the restaurant by name
+        const restaurantResponse = await fetch(`https://vjbicbyggcrdejrwwzqn.supabase.co/rest/v1/restaurants?name=eq.${decodedRestaurantName}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+            'apikey': process.env.NEXT_PUBLIC_SUPABASE_API_KEY!,
+          },
+        });
+
+        if (!restaurantResponse.ok) {
+          throw new Error(`Failed to fetch restaurant: ${restaurantResponse.statusText}`);
+        }
+
+        const restaurants: Restaurant[] = await restaurantResponse.json();
+        
+        if (restaurants.length === 0) {
+          throw new Error('No restaurant found with this name');
+        }
+
+        setRestaurant(restaurants[0]);
+
+        // ... existing code to fetch menu items ...
+
+      } catch (err) {
+        // ... existing error handling ...
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRestaurantData();
+  }, [params.id, setMenuItems]); 
+  
+  
   useEffect(() => {
     const fetchMenuItems = async () => {
       try {
@@ -145,13 +195,44 @@ export default function MenuPage() {
     fetchMenuItems();
   }, [params.id, setMenuItems]);
 
+  useEffect(() => {
+    if (!menuItems) return;
+
+    const allItems = Object.values(menuItems).flatMap(categories => 
+      Object.values(categories).flat()
+    );
+
+    const fuse = new Fuse(allItems, {
+      keys: ['name', 'category'],
+      threshold: 0.4,
+    });
+
+    const searchResults = searchQuery
+      ? fuse.search(searchQuery).map(result => result.item)
+      : allItems;
+
+    const newFilteredItems = searchResults.reduce((acc, item) => {
+      const menuType = Object.keys(menuItems).find(type => 
+        Object.values(menuItems[type]).some(category => category.includes(item))
+      ) || '';
+
+      if (!acc[menuType]) acc[menuType] = {};
+      if (!acc[menuType][item.category]) acc[menuType][item.category] = [];
+      acc[menuType][item.category].push(item);
+      return acc;
+    }, {} as GroupedMenuItems);
+
+    setFilteredMenuItems(newFilteredItems);
+  }, [searchQuery, menuItems]);
+
   const handleAddToCart = (item: MenuItem) => {
     if (user) {
       addToCart(item);
       toast({
         title: "Item added to cart",
         description: `${item.name} has been added to your cart.`,
-        duration: 3000,
+        duration: 5000,
+        className: "max-w-[90vw] sm:max-w-[85vw] md:max-w-[80vw] lg:max-w-[75vw] xl:max-w-[60vw]",
       });
     } else {
       setIsAuthPromptOpen(true);
@@ -168,14 +249,37 @@ export default function MenuPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 bg-background text-foreground">
-      <h1 className="text-4xl font-bold mb-8 text-primary">{restaurantName}&apos;s Menu</h1>
-      <div className="mb-5">
+      <h1 className="text-4xl font-bold mb-8 text-primary text-center">{restaurantName}</h1>
+      <div className="mb-10 flex justify-center">
         <RestaurantCombobox />
       </div>
+      {restaurant && restaurant.image_url && (
+        <div className="mb-8">
+          <Image
+            src={restaurant.image_url}
+            alt={restaurantName}
+            width={400}
+            height={200}
+            priority
+            className="w-full h-auto rounded-xl object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 70vw, 60vw"
+          />
+        </div>
+      )}
+      <div className="mb-4">
+        <Input
+          type="text"
+          placeholder="Search menu items..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full"
+        />
+      </div>
+      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-2" />
       <ScrollArea className="h-[calc(100vh-200px)]">
-      {Object.entries(menuItems).map(([menuType, categories]) => (
+      {Object.entries(filteredMenuItems).map(([menuType, categories]) => (
         <div key={menuType} className="mb-12">
-          <h2 className="text-3xl font-semibold mb-6 text-primary">{menuType}</h2>
+          <h2 className="text-3xl font-semibold mb-6 mt-6 text-primary">{menuType}</h2>
           {Object.entries(categories)
             .sort(sortCategories)
             .map(([category, items]) => (
