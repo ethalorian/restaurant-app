@@ -4,7 +4,7 @@ import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { GoogleSignUpButton } from "@/app/(auth-pages)/googleSignInButton";
+import { GoogleSignInButton } from "@/app/(auth-pages)/googleSignInButton";
 
 
 
@@ -45,9 +45,14 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
         </div>
       </form>
       
-      <div>
-          <GoogleSignUpButton />
-      </div>
+      <div className="w-full mt-4">
+        <GoogleSignInButton 
+        className="w-full" 
+        variant="default"
+      >
+        Sign up with Google
+        </GoogleSignInButton>
+    </div>
     </div>
   );
 }

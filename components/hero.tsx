@@ -4,6 +4,7 @@ import { RestaurantCombobox } from "./restSearch";
 import { DialogTitle, DialogDescription } from "./ui/dialog";
 import Restaurants from "./restaurants";
 import { Button } from "./ui/button";
+import { ScrollArea } from "./ui/scroll-area";
 
 export default function Header() {
   return (
@@ -29,30 +30,32 @@ export default function Header() {
             </p>
           </div>
         </DrawerTrigger>
-
-        <DrawerContent className="h-[80vh] sm:h-[80vh]">
-          <div className="p-4 relative flex flex-col items-center">
-            <main className="w-full max-w-3xl">
-              <div className="flex flex-col items-center text-center">
-                <DialogTitle className="text-2xl font-bold mb-2 mt-2">Partner Restaurants</DialogTitle>
-                <div className="mt-6 w-full">
-                  <RestaurantCombobox />
+            <DrawerContent className="h-[80vh] sm:h-[80vh]">
+              <ScrollArea className="h-full">
+                <div className="p-4 relative flex flex-col items-center">
+                  <main className="w-full max-w-3xl">
+                    <div className="flex flex-col items-center text-center">
+                      <DialogTitle className="text-2xl font-bold mb-2 mt-2">Partner Restaurants</DialogTitle>
+                      <div className="mt-6 w-full">
+                        <RestaurantCombobox />
+                      </div>
+                      <DialogDescription className="mb-4 mt-4">Search and select from our partner restaurants.</DialogDescription>
+                      
+                      <div className="mt-4 w-full">
+                        <Restaurants />
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 flex justify-center">
+                      <DrawerClose asChild>
+                        <Button variant="outline" size="sm">Close</Button>
+                      </DrawerClose>
+                    </div>
+                  </main>
                 </div>
-                <DialogDescription className="mb-4 mt-4">Search and select from our partner restaurants.</DialogDescription>
-                
-                <div className="mt-4 w-full">
-                  <Restaurants />
-                </div>
-              </div>
-              
-              <div className="mt-4 flex justify-center">
-                <DrawerClose asChild>
-                  <Button variant="outline" size="sm">Close</Button>
-                </DrawerClose>
-              </div>
-            </main>
-          </div>
-        </DrawerContent>
+              </ScrollArea>
+            </DrawerContent>
+          
       </Drawer>
     </div>
   );

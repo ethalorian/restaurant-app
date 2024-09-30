@@ -44,8 +44,13 @@ export default function Login({ searchParams }: { searchParams: Message & { redi
         <FormMessage message={searchParams} />
       </div>
     </form>
-    <div className="">
-      <GoogleSignInButton />
+    <div className="w-full mt-4">
+      <GoogleSignInButton 
+        className="w-full" 
+        variant="default"
+      >
+        Sign in with Google
+      </GoogleSignInButton>
     </div>
   </div>
   );
