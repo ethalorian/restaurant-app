@@ -12,13 +12,16 @@ import {
 } from "@/components/ui/sheet"
 import { useShoppingCart } from "@/contexts/ShoppingCartContext"
 import { useState, useEffect } from "react"
+import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { StripeProvider } from "@/app/stripe-provider";
+import { StripePaymentForm } from "./stripe-payment-form";
 
 export function ShoppingCart() {
   const { cartItems, removeFromCart, addToCart } = useShoppingCart()
   const [subtotal, setSubtotal] = useState(0)
   const serviceFeeRate = 0.035 // 3.5%
   const salesTaxRate = 0.065 // 6.5%
-
+ 
   // Calculate total number of items in the cart
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0)
 
@@ -31,69 +34,70 @@ export function ShoppingCart() {
   const salesTax = subtotal * salesTaxRate
   const total = subtotal + serviceFee + salesTax
 
+
   return (
-    <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
-          <ShoppingCartIcon className="h-5 w-5" />
-          {totalItems > 0 && (
-            <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
-              {totalItems}
-            </span>
-          )}
-        </Button>
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Your Cart</SheetTitle>
-        </SheetHeader>
-        <div className="flex flex-col gap-4 py-4">
-          {cartItems.length === 0 ? (
-            <p>Your cart is empty.</p>
-          ) : (
-            cartItems.map((item) => (
-              <div key={item.id} className="flex items-center justify-between">
-                <div>
-                  <p>{item.name}</p>
-                  <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button size="icon" variant="outline" onClick={() => removeFromCart(item.id)}>
-                    <Minus className="h-4 w-4" />
-                  </Button>
-                  <span>{item.quantity}</span>
-                  <Button size="icon" variant="outline" onClick={() => addToCart(item)}>
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-        <div className="mt-4 space-y-2">
-          <div className="flex justify-between">
-            <span>Subtotal for {totalItems} item{totalItems !== 1 ? 's' : ''}:</span>
-            <span>${subtotal.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Service Fee (3.5%):</span>
-            <span>${serviceFee.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span>Sales Tax (6.5%):</span>
-            <span>${salesTax.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between font-bold">
-            <span>Total:</span>
-            <span>${total.toFixed(2)}</span>
-          </div>
-        </div>
-        <SheetFooter className="mt-4">
-          <Button className="w-full" onClick={() => {/* Add checkout logic here */}}>
-            Checkout
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button variant="ghost" size="icon" className="relative">
+            <ShoppingCartIcon className="h-5 w-5" />
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+                {totalItems}
+              </span>
+            )}
           </Button>
-        </SheetFooter>
-      </SheetContent>
-    </Sheet>
-  )
+        </SheetTrigger>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Your Cart</SheetTitle>
+          </SheetHeader>
+          <div className="flex flex-col gap-4 py-4">
+            {cartItems.length === 0 ? (
+              <p>Your cart is empty.</p>
+            ) : (
+              cartItems.map((item) => (
+                <div key={item.id} className="flex items-center justify-between">
+                  <div>
+                    <p>{item.name}</p>
+                    <p className="text-sm text-gray-500">${item.price.toFixed(2)}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button size="icon" variant="outline" onClick={() => removeFromCart(item.id)}>
+                      <Minus className="h-4 w-4" />
+                    </Button>
+                    <span>{item.quantity}</span>
+                    <Button size="icon" variant="outline" onClick={() => addToCart(item)}>
+                      <Plus className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+          <div className="mt-4 space-y-2">
+            <div className="flex justify-between">
+              <span>Subtotal for {totalItems} item{totalItems !== 1 ? 's' : ''}:</span>
+              <span>${subtotal.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Service Fee (3.5%):</span>
+              <span>${serviceFee.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Sales Tax (6.5%):</span>
+              <span>${salesTax.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between font-bold">
+              <span>Total:</span>
+              <span>${total.toFixed(2)}</span>
+            </div>
+          </div>
+          <SheetFooter className="mt-4">
+            <StripeProvider total={total}>
+              <StripePaymentForm total={total} />
+            </StripeProvider>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+  );
 }

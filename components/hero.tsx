@@ -46,7 +46,7 @@ export default function Header() {
                   </div>
                   <DialogDescription className="mb-4 mt-4">Search and select from our partner restaurants.</DialogDescription>
                   
-                  <div className="mt-6 w-full">
+                  <div className="mt-4 w-full">
                     <Restaurants />
                   </div>
                 </div>

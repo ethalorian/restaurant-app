@@ -46,7 +46,7 @@ const Restaurants = async () => {
                         restaurants.map((restaurant) => (
                             <CarouselItem key={restaurant.id}>
                                 <h3 className="text-center text-4xl mt-2 mb-2">{restaurant.name}</h3>
-                                <div className="w-2/3 md:w-1/2 mx-auto"> {/* Updated wrapper div */}
+                                <div className="w-1/2 md:w-1/2 mx-auto"> {/* Updated wrapper div */}
                                     <img src={restaurant.image_url} alt={restaurant.name} className="w-full h-auto rounded-xl" />
                                 </div>
                                 <h3 className="text-center text-xl mt-2">{restaurant.street_address}</h3>
