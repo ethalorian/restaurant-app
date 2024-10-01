@@ -262,35 +262,36 @@ export default function MenuPage() {
   if (error) return <div className="text-destructive font-medium h-screen flex items-center justify-center">Error: {error}</div>;
 
   return (
-    <div ref={containerRef} className="container mx-auto px-4 py-8 bg-background text-foreground overflow-y-auto">
-      <h1 className="text-4xl font-bold mb-8 text-primary text-center">{restaurantName}</h1>
-      <div className="mb-10 flex justify-center">
-        <RestaurantCombobox />
-      </div>
-      {restaurant && restaurant.image_url && (
-        <div className="mb-8">
-          <Image
-            src={restaurant.image_url}
-            alt={restaurantName}
-            width={400}
-            height={200}
-            priority
-            className="w-full h-auto rounded-xl object-cover"
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 80vw, (max-width: 1024px) 70vw, 60vw"
+    <div ref={containerRef} className="container mx-auto px-4 py-2 bg-background text-foreground overflow-y-auto flex flex-col h-screen">
+      <div className="flex-none mb-4 h-[calc(33vh-4rem)] flex flex-col items-center justify-center">
+        <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-primary text-center">{restaurantName}</h1>
+        <div className="mb-2 w-full flex justify-center max-w-xs">
+          <RestaurantCombobox />
+        </div>
+        {restaurant && restaurant.image_url && (
+          <div className="mb-2 w-24 h-24 sm:w-32 sm:h-32">
+            <Image
+              src={restaurant.image_url}
+              alt={restaurantName}
+              width={256}
+              height={256}
+              priority
+              className="w-full h-full rounded-xl object-cover"
+            />
+          </div>
+        )}
+        <div className="mb-2 w-full max-w-xs">
+          <Input
+            type="text"
+            placeholder="Search menu items..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full"
           />
         </div>
-      )}
-      <div className="mb-4">
-        <Input
-          type="text"
-          placeholder="Search menu items..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full"
-        />
       </div>
       <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-2" />
-      <ScrollArea className="h-[calc(100vh-200px)]">
+      <ScrollArea className="flex-grow">
       {Object.entries(filteredMenuItems).map(([menuType, categories]) => (
         <div key={menuType} className="mb-12">
           <h2 className="text-3xl font-semibold mb-6 mt-6 text-primary">{menuType}</h2>

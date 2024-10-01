@@ -30,31 +30,33 @@ export default function Header() {
             </p>
           </div>
         </DrawerTrigger>
-        <DrawerContent className="h-[80vh] sm:h-[80vh] flex items-center justify-center">
-          <ScrollArea className="h-full w-full max-w-3xl">
-            <div className="p-4 flex flex-col items-center">
-              <main className="w-full">
-                <div className="flex flex-col items-center text-center">
-                  <DialogTitle className="text-2xl font-bold mb-2 mt-2">Partner Restaurants</DialogTitle>
-                  <div className="mt-6 w-full">
-                    <RestaurantCombobox />
-                  </div>
-                  <DialogDescription className="mb-4 mt-4">Search and select from our partner restaurants.</DialogDescription>
-                  
-                  <div className="mt-4 w-full">
-                    <Restaurants />
-                  </div>
+        <DrawerContent className="h-[100dvh] w-full max-w-full">
+        <ScrollArea className="h-full w-full">
+          <div className="p-2 sm:p-4 flex flex-col items-center">
+            <main className="w-full max-w-[90vw] sm:max-w-3xl">
+              <div className="flex flex-col items-center text-center">
+                <DialogTitle className="text-lg sm:text-xl md:text-2xl font-bold mb-2 mt-2">Partner Restaurants</DialogTitle>
+                <div className="mt-2 sm:mt-4 w-full max-w-full sm:max-w-md">
+                  <RestaurantCombobox />
                 </div>
+                <DialogDescription className="mb-2 sm:mb-4 mt-2 sm:mt-4 text-xs sm:text-sm md:text-base">
+                  Search and select from our partner restaurants.
+                </DialogDescription>
                 
-                <div className="mt-4 flex justify-center">
-                  <DrawerClose asChild>
-                    <Button variant="outline" size="sm">Close</Button>
-                  </DrawerClose>
+                <div className="mt-2 sm:mt-4 w-full">
+                  <Restaurants />
                 </div>
-              </main>
-            </div>
-          </ScrollArea>
-        </DrawerContent>
+              </div>
+              
+              <div className="mt-4 flex justify-center">
+                <DrawerClose asChild>
+                  <Button variant="outline" size="sm">Close</Button>
+                </DrawerClose>
+              </div>
+            </main>
+          </div>
+        </ScrollArea>
+      </DrawerContent>
           
       </Drawer>
     </div>
