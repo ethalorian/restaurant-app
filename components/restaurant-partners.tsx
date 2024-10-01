@@ -52,7 +52,7 @@ const RestaurantPartners: React.FC = () => {
         <div className="flex justify-center w-full">
             <Collapsible open={isOpen} onOpenChange={setIsOpen} className="w-full max-w-2xl">
                 <CollapsibleTrigger className="flex items-center justify-center w-full p-4 bg-neutral-100 dark:bg-neutral-800 rounded-md">
-                    <h2 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">A List of our Restaurant Partners</h2>
+                    <h2 className="text-xl font-semibold text-neutral-800 dark:text-neutral-200">Restaurants Particpating in the Search</h2>
                     <span className="ml-2 text-neutral-600 dark:text-neutral-400">{isOpen ? '▲' : '▼'}</span>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="bg-white dark:bg-neutral-900 p-4 mt-4 rounded-md shadow">

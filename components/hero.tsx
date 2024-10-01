@@ -11,7 +11,7 @@ export default function Header() {
     <div className="flex flex-col items-center justify-center text-center">
       <div className="flex flex-col items-center justify-center">
         <h1 className="text-4xl md:text-6xl lg:text-8xl mb-2 md:mb-4">Looking for a Snack?</h1>
-        <h4 className="text-base md:text-lg">Welcome to Food Finder! The only place to find what you are craving.</h4>
+        <h4 className="text-base md:text-lg">Welcome to Food Finder! If you can't find it here you won't find it anywhere!</h4>
       </div>
       
       <Drawer>
@@ -26,7 +26,7 @@ export default function Header() {
               className="w-full max-w-[400px] md:max-w-[500px] lg:max-w-[600px] h-auto mt-4 md:mt-6"
             />
             <p className="text-lg md:text-xl lg:text-2xl font-medium text-center mt-4">
-              <strong>CLICK ON THE ICON TO BEGIN</strong><br/>
+              <strong>CLICK ABOVE TO START</strong><br/>
             </p>
           </div>
         </DrawerTrigger>
