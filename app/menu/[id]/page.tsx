@@ -54,18 +54,29 @@ export default function MenuPage() {
   const [filteredMenuItems, setFilteredMenuItems] = useState<GroupedMenuItems>({});
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [containerHeight, setContainerHeight] = useState<number | null>(null);
 
   useEffect(() => {
     const handleResize = () => {
       if (containerRef.current) {
-        containerRef.current.style.height = `${window.innerHeight}px`;
+        const newHeight = window.innerHeight;
+        setContainerHeight(newHeight);
+        containerRef.current.style.height = `${newHeight}px`;
       }
     };
 
     handleResize(); // Set initial height
     window.addEventListener('resize', handleResize);
 
-    return () => window.removeEventListener('resize', handleResize);
+    // Force a re-render after a short delay
+    const timer = setTimeout(() => {
+      handleResize();
+    }, 100);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+    };
   }, []);
 
   useEffect(() => {
@@ -262,7 +273,7 @@ export default function MenuPage() {
   if (error) return <div className="text-destructive font-medium h-screen flex items-center justify-center">Error: {error}</div>;
 
   return (
-    <div ref={containerRef} className="container mx-auto px-4 py-2 bg-background text-foreground overflow-y-auto flex flex-col h-screen">
+    <div ref={containerRef} className="container mx-auto px-4 py-2 bg-background text-foreground overflow-y-auto flex flex-col h-screen" style={{ height: containerHeight ? `${containerHeight}px` : '100vh' }}>
       <div className="flex-none mb-4 h-[calc(33vh-4rem)] flex flex-col items-center justify-center">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-primary text-center">{restaurantName}</h1>
         <div className="mb-2 w-full flex justify-center max-w-xs">
@@ -291,7 +302,7 @@ export default function MenuPage() {
         </div>
       </div>
       <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-2" />
-      <ScrollArea className="flex-grow">
+      <ScrollArea className="flex-grow" style={{ height: containerHeight ? `${containerHeight - 200}px` : 'calc(100vh - 200px)' }}>
       {Object.entries(filteredMenuItems).map(([menuType, categories]) => (
         <div key={menuType} className="mb-12">
           <h2 className="text-3xl font-semibold mb-6 mt-6 text-primary">{menuType}</h2>
