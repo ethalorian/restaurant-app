@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import { RestaurantCombobox } from '@/components/restSearch';
 import { useShoppingCart } from '@/contexts/ShoppingCartContext';
@@ -53,6 +53,20 @@ export default function MenuPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredMenuItems, setFilteredMenuItems] = useState<GroupedMenuItems>({});
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        containerRef.current.style.height = `${window.innerHeight}px`;
+      }
+    };
+
+    handleResize(); // Set initial height
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -244,11 +258,11 @@ export default function MenuPage() {
     return order.indexOf(a[0]) - order.indexOf(b[0]);
   };
 
-  if (loading) return <div className="text-foreground font-medium">Loading...</div>;
-  if (error) return <div className="text-destructive font-medium">Error: {error}</div>;
+  if (loading) return <div className="text-foreground font-medium h-screen flex items-center justify-center">Loading...</div>;
+  if (error) return <div className="text-destructive font-medium h-screen flex items-center justify-center">Error: {error}</div>;
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-background text-foreground">
+    <div ref={containerRef} className="container mx-auto px-4 py-8 bg-background text-foreground overflow-y-auto">
       <h1 className="text-4xl font-bold mb-8 text-primary text-center">{restaurantName}</h1>
       <div className="mb-10 flex justify-center">
         <RestaurantCombobox />
